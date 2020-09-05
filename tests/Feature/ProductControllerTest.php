@@ -21,7 +21,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->getJson('/api/products');
 
-        $response->assertSuccessful();
+        $response->assertStatus(200);
         $response->assertHeader('content-type', 'application/json');
         $response->assertJsonCount(5);
     }
@@ -30,11 +30,11 @@ class ProductControllerTest extends TestCase
     {
         $data = [
             'name' => 'Hola',
-            'price' => 1000,
+            'price' => 10,
         ];
         $response = $this->postJson('/api/products', $data);
 
-        $response->assertSuccessful();
+        $response->assertStatus(201);
         $response->assertHeader('content-type', 'application/json');
         $this->assertDatabaseHas('products', $data);
     }
@@ -46,12 +46,12 @@ class ProductControllerTest extends TestCase
 
         $data = [
             'name' => 'Update Product',
-            'price' => 20000,
+            'price' => 20,
         ];
 
-        $response = $this->patchJson("/api/products/{$product->getKey()}", $data);
-        $response->assertSuccessful();
-        $response->assertHeader('content-type', 'application/json');
+        $response = $this->patchJson("/api/products/{$product->getKey()}", $data, ['content-type', 'application/json']);
+        $response->assertStatus(200);
+        //$response->assertHeader('content-type', 'application/json');
     }
 
     public function test_show_product()
@@ -61,7 +61,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->getJson("/api/products/{$product->getKey()}");
 
-        $response->assertSuccessful();
+        $response->assertStatus(200);
         $response->assertHeader('content-type', 'application/json');
     }
 
@@ -72,7 +72,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->deleteJson("/api/products/{$product->getKey()}");
 
-        $response->assertSuccessful();
+        $response->assertStatus(200);
         $response->assertHeader('content-type', 'application/json');
         $this->assertDeleted($product);
     }
