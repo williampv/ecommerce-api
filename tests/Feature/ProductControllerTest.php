@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\User;
+use Laravel\Sanctum\Sanctum;
 
 class ProductControllerTest extends TestCase
 {
@@ -13,10 +15,18 @@ class ProductControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Sanctum::actingAs(
+            factory(User::class)->create()
+        );
     }
 
     public function test_index()
     {
+        Sanctum::actingAs(
+            factory(User::class)->create()
+        );
+        
         factory(Product::class, 5)->create();
 
         $response = $this->getJson('/api/products');
