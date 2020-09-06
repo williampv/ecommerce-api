@@ -23,10 +23,6 @@ class ProductControllerTest extends TestCase
 
     public function test_index()
     {
-        Sanctum::actingAs(
-            factory(User::class)->create()
-        );
-        
         factory(Product::class, 5)->create();
 
         $response = $this->getJson('/api/products');
